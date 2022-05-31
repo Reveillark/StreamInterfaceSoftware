@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StreamUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="556.5" Width="1000">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel x:Name="LoginPanel" Grid.Row="0" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox x:Name="loginTextBox" Height="22" TextWrapping="NoWrap" Text="Login" Width="120"/>
+            <TextBox x:Name="passwordTextBox" Height="22" TextWrapping="NoWrap" Text="Password" Width="120"/>
+        </StackPanel>
+        <StackPanel x:Name="StreamServerPanel" Grid.Row="1" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox x:Name="portTextBox" Height="22" TextWrapping="Wrap" Text="Port" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="adressTextBox" Height="22" TextWrapping="Wrap" Text="Adress" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="keyTextBox" Height="22" TextWrapping="Wrap" Text="Stream key" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel x:Name="DevicesPanel" Grid.Row="2" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ComboBox x:Name="comboBoxVideo" Width="300" SelectionChanged="ComboBoxVideo_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox x:Name="comboBoxAudio" Width="300" SelectionChanged="ComboBoxAudio_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="refreshButton" Content="Refresh devices" Width="133" Click="RefreshButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <Grid x:Name="LowerGrid" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
         
+            <TextBox x:Name="textBox" Grid.Column="0"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"
+                     TextWrapping="Wrap"
+                     Text="TextBox"
+                     Background="#FF0E0E0E" Foreground="White"
+                     IsReadOnlyCaretVisible="True"
+                     IsReadOnly="True"
+                     ScrollViewer.CanContentScroll="True"
+                     VerticalScrollBarVisibility="Visible"
+                     Loaded="TextBox_Loaded"/>
+                <Button x:Name="streamButton" Grid.Column="1" Content="Stream !" Width="200" Height="64" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="StreamButton_Click"/>
+        </Grid>
     </Grid>
 </Window>
