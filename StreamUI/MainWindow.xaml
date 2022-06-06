@@ -6,6 +6,39 @@
         xmlns:local="clr-namespace:StreamUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="556.5" Width="1000">
+
+    <Window.Resources>
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" 
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" />
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                <Setter Property="Foreground" Value="LightGray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources> 
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -16,13 +49,13 @@
 
 
         <StackPanel x:Name="LoginPanel" Grid.Row="0" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox x:Name="loginTextBox" Height="22" TextWrapping="NoWrap" Text="Login" Width="120"/>
-            <TextBox x:Name="passwordTextBox" Height="22" TextWrapping="NoWrap" Text="Password" Width="120"/>
+            <TextBox x:Name="loginTextBox" Style="{StaticResource placeHolder}" Height="22" TextWrapping="NoWrap" Tag="Login" Width="120"/>
+            <TextBox x:Name="passwordTextBox" Style="{StaticResource placeHolder}" Height="22" TextWrapping="NoWrap" Tag="Password" Width="120"/>
         </StackPanel>
         <StackPanel x:Name="StreamServerPanel" Grid.Row="1" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox x:Name="portTextBox" Height="22" TextWrapping="Wrap" Text="Port" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox x:Name="adressTextBox" Height="22" TextWrapping="Wrap" Text="Adress" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox x:Name="keyTextBox" Height="22" TextWrapping="Wrap" Text="Stream key" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="portTextBox" Style="{StaticResource placeHolder}" Height="22" TextWrapping="Wrap" Tag="Port" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="adressTextBox" Style="{StaticResource placeHolder}" Height="22" TextWrapping="Wrap" Tag="Adress" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="keyTextBox" Style="{StaticResource placeHolder}" Height="22" TextWrapping="Wrap" Tag="Stream key" Width="120"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel x:Name="DevicesPanel" Grid.Row="2" Height="54" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ComboBox x:Name="comboBoxVideo" Width="300" SelectionChanged="ComboBoxVideo_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -35,20 +68,25 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-
-        
-            <TextBox x:Name="textBox" Grid.Column="0"
+            
+            
+            <RichTextBox x:Name="textBox" Grid.Column="0"
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch"
-                     TextWrapping="Wrap"
-                     Text="TextBox"
-                     Background="#FF0E0E0E" Foreground="White"
+                     Background="#FF0E0E0E"
+                     Foreground="White"
                      IsReadOnlyCaretVisible="True"
                      IsReadOnly="True"
                      ScrollViewer.CanContentScroll="True"
                      VerticalScrollBarVisibility="Visible"
-                     Loaded="TextBox_Loaded"/>
-                <Button x:Name="streamButton" Grid.Column="1" Content="Stream !" Width="200" Height="64" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="StreamButton_Click"/>
+                     Loaded="TextBox_Loaded">
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
+            <Button x:Name="streamButton" Grid.Column="1" Content="Stream !" Width="200" Height="64" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="StreamButton_Click"/>
         </Grid>
     </Grid>
 </Window>

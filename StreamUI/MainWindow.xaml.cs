@@ -130,6 +130,8 @@ namespace StreamUI
 
         public Process CommandFFMPEG(string arguments, Del[] outputSubscribers = null, Del[] errorSubscribers = null, ExitDel[] exitSubscribers = null)
         {
+            this.textBox.AppendText("ffmpeg " + arguments + "\n");
+
             ProcessStartInfo pstart = new ProcessStartInfo("ffmpeg", string.Format(arguments));
             pstart.CreateNoWindow = true;
             pstart.ErrorDialog = false;
@@ -173,7 +175,6 @@ namespace StreamUI
             proc.BeginOutputReadLine();
             proc.BeginErrorReadLine();
 
-            this.textBox.AppendText("ffmpeg " + arguments + "\n");
             //string output = proc.StandardOutput.ReadToEnd();
             //this.textBox.AppendText(output);
             //output = proc.StandardError.ReadToEnd();
@@ -190,7 +191,7 @@ namespace StreamUI
 
         private void Display(string message)
         {
-            this.textBox.AppendText("\n"+message);
+            this.textBox.AppendText(message + "\n");
             this.textBox.ScrollToEnd();
         }
 
@@ -201,7 +202,25 @@ namespace StreamUI
 
         private void StreamButton_Click(object sender, RoutedEventArgs e)
         {
-            CommandFFMPEG("-y -loglevel warning -f dshow -i video=\"" + comboBoxVideo.SelectedValue + "\" -r 30 -threads 2 -vcodec libx264 -f flv rtmp://stream.intranet.noxiris.net/live/cy_camera_cam_test");
+            //rtmp://stream.intranet.noxiris.net/live/cy_camera_cam_test
+            string serverAdress = adressTextBox.Text, streamKey = keyTextBox.Text;
+            while (serverAdress.Length > 0 && serverAdress[serverAdress.Length - 1] == '/')
+            {
+                serverAdress = serverAdress.Substring(0, serverAdress.Length - 1);
+            }
+
+            if (String.IsNullOrWhiteSpace(serverAdress))
+            {
+                textBox.ErrorText("Server adress null or invalid");
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(streamKey))
+            {
+                textBox.ErrorText("Streamer key null or invalid");
+                return;
+            }
+
+            CommandFFMPEG("-y -loglevel warning -f dshow -i video=\"" + comboBoxVideo.SelectedValue + "\" -r 30 -threads 2 -vcodec libx264 -f flv " + serverAdress + "/" + streamKey);
         }
     }
 }
